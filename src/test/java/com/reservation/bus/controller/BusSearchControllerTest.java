@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -28,14 +29,14 @@ public class BusSearchControllerTest {
     @Test
     public void testQueryReturnsSortedByPriceDefaultFilteredList() throws Exception {
         List<Bus> busList = new ArrayList<Bus>();
-        Bus mockBusOne = new Bus(1, "ppntravels", "Chennai", "Bangalore", new Time(0, 0, 0), new Time(0, 0, 0), "Volvo", 0, 999);
-        Bus mockBusthree = new Bus(1, "ppntravels", "Chennai", "Bangalore", new Time(0, 0, 0), new Time(0, 0, 0), "Volvo", 0, 990);
+        Bus mockBusOne = new Bus(1, "ppntravels", "Chennai", "Bangalore", new Time(0, 0, 0), new Time(0, 0, 0), "Volvo", 0, 990);
+        Bus mockBusthree = new Bus(1, "ppntravels", "Chennai", "Bangalore", new Time(0, 0, 0), new Time(0, 0, 0), "Volvo", 0, 999);
         Bus mockBusTwo = new Bus(1, "ppntravels", "Madurai", "Coimbatore", new Time(0, 0, 0), new Time(0, 0, 0), "Volvo", 0, 99);
         busList.add(mockBusOne);
         busList.add(mockBusTwo);
         busList.add(mockBusthree);
 
-        Mockito.when(busSearchService.findAll()).thenReturn(busList);
+        Mockito.when(busSearchService.findAll(Sort.by(Sort.Order.desc("price")))).thenReturn(busList);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/querybuses").param("departureCity", "Chennai")
                 .param("arrivalCity", "Bangalore");
 

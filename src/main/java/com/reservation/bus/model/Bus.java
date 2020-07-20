@@ -26,6 +26,13 @@ public class Bus {
 
     @Column(name = "departure_time")
     Time departureTime;
+    @Column(name = "arrival_time")
+    Time arrivalTime;
+    @Column(name = "bus_type")
+    String busType;
+    int duration;
+    @Column(name = "price")
+    int price;
 
     public Bus(Integer id, String operatorName, String departureLoc, String arrivalLoc, Time departureTime, Time arrivalTime, String busType, int duration, int price) {
         this.id = id;
@@ -39,19 +46,9 @@ public class Bus {
         this.price = price;
     }
 
-    public Bus(){
+    public Bus() {
 
     }
-    @Column(name = "arrival_time")
-    Time arrivalTime;
-
-    @Column(name = "bus_type")
-    String busType;
-
-    int duration;
-
-    @Column(name = "price")
-    int price;
 
     public String getOperatorName() {
         return operatorName;
@@ -71,6 +68,10 @@ public class Bus {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDepartureLoc() {
@@ -114,10 +115,6 @@ public class Bus {
     }
 
     public int getDuration() {
-        return ((int) (departureTime.getTime() - arrivalTime.getTime()) / (60 * 60 * 1000) % 24);
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        return Integer.valueOf(new SimpleDateFormat("h").format(new Date(departureTime.getTime() - arrivalTime.getTime()))).intValue();
     }
 }

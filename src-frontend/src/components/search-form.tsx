@@ -27,8 +27,6 @@ export class SearchForm extends React.Component<any, SearchFormState> {
       records: []
     };
 
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDepartureCityChange = this.handleDepartureCityChange.bind(this);
     this.handleArrivalCityChange = this.handleArrivalCityChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -56,10 +54,9 @@ export class SearchForm extends React.Component<any, SearchFormState> {
     if (this.state.departureCity && this.state.arrivalCity) {
       try {
         let response = await Axios.get('/querybuses', { params: { departureCity: this.state.departureCity, arrivalCity: this.state.arrivalCity } })
-        console.log(response);
         this.setState({ records: response.data })
       } catch (e) {
-        console.log(e.message);
+        throw new Error(e.message);
       }
     } else {
       window.alert('Enter valid values in the required fields')
@@ -90,7 +87,7 @@ export class SearchForm extends React.Component<any, SearchFormState> {
           </label>
           <input type="button" onClick={this.handleSearch} value='Search Bus' />
         </div>
-        {this.state.records.length > 0 && <BusListGrid records={this.state.records} />}
+        {this.state.records.length > 0 ? <BusListGrid records={this.state.records} /> : <h2>No buses found for your search</h2>}
 
       </div>
     );
